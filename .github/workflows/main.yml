@@ -1,0 +1,29 @@
+name: Build DarknessOS
+
+on:
+  workflow_dispatch: # Это позволяет запускать сборку вручную кнопкой
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          binutils debootstrap squashfs-tools xorriso \
+          grub-pc-bin grub-efi-amd64 grub2-common mtools dosfstools
+
+    - name: Build ISO
+      run: |
+        # Запускаем сборку, которая заложена в проекте
+        sudo make
+
+    - name: Upload ISO artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: DarknessOS-ISO
+        path: "*.iso"
