@@ -1,7 +1,9 @@
 name: Build DarknessOS
 
 on:
-  workflow_dispatch: # Это позволяет запускать сборку вручную кнопкой
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,7 +21,6 @@ jobs:
 
     - name: Build ISO
       run: |
-        # Запускаем сборку, которая заложена в проекте
         sudo make
 
     - name: Upload ISO artifact
